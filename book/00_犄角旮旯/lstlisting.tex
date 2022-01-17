@@ -1,0 +1,33 @@
+\definecolor{typecolor}{HTML}{2B91AF}
+\definecolor{funccolor}{HTML}{74531F}
+\definecolor{macrocolor}{HTML}{8A1BFF}
+\lstset{
+	tabsize = 4,
+	columns = fixed,
+	numbers = left,
+	breaklines = true,
+	keywordstyle = \color[RGB]{40,40,255},
+	numberstyle = \scriptsize\color{darkgray},
+	basicstyle = \normalsize\ttfamily,
+	commentstyle = \normalsize\color[RGB]{0,128,0},
+	stringstyle = \normalsize\slshape\color[RGB]{128,0,0},
+	showstringspaces = false,
+	morekeywords={%
+	},
+	emphstyle=\color{typecolor},
+	emph={%
+	},
+	emphstyle={[2]\color{funccolor}},
+	emph={[2]%
+	},
+	emphstyle={[3]\color{macrocolor}},
+	emph={[3]%
+	},
+}
+\lstdefinelanguage{assembly}{
+	sensitive=false,
+	morecomment=[l]{;},
+	morecomment=[l]{\#},
+	morestring=[b]",
+	morestring=[b]',
+}
