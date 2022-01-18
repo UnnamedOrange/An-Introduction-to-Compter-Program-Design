@@ -3,3 +3,95 @@
 
 \section{语言}
 
+\subsection{机器语言与汇编语言}
+
+人类使用\textbf{自然语言（natural language）}进行交流，自然语言自由而散漫。
+
+\begin{center}
+	吃葡萄不吐葡萄皮不吃葡萄倒吐葡萄皮。
+\end{center}
+
+但计算机不能执行自然语言，主要原因并不在于自然语言太难，也不在于计算机吃不到葡萄，而是计算机只能执行\textbf{机器语言（machine language）}。我们曾见过一些机器语言（见图 \ref{pic:ip}）：
+
+\begin{lstlisting}[language={}, numbers=none]
+C7 04 24 72 00 00 00
+\end{lstlisting}
+
+\begin{note}
+	机器语言就是由机器码构成的语言，里面全是数，为了便于交流，常用十六进制表示这些数，但在计算机中它们是以二进制存储的。注意，一字节正好可以用两位的十六进制数表示，所以上例中的数是一字节一字节写的。
+\end{note}
+
+人类是记不住机器语言中各个数的含义的\footnote{如果真有人记住了，在仅有机器语言的时代他就是计算机专家，在现在他可以考虑去参加最强大脑。}。如果一定要使用机器语言进行编程，只能采用查表的方式，不断查找想让计算机执行的指令对应的机器码，费时费力。为了解决这一问题，\textbf{汇编语言（assembly language）}就诞生了。汇编语言使用\textbf{助记符}表示指令，通过\textbf{汇编器（assembler）}将这些指令翻译成相应的机器码，并且能根据应用场景自动填写机器码中需要的辅助信息\footnote{例如，一个指令后面的两个操作数都是寄存器，和只有其中一个操作数是寄存器的情况在机器码中是需要不同的辅助信息的。汇编器会根据你写的代码确定这个辅助信息。}。上面的机器语言对应的汇编指令为（见图 \ref{pic:ip}）：
+
+\begin{lstlisting}[language=assembly, numbers=none]
+mov    dword ptr [rsp], 72h
+\end{lstlisting}
+
+如果使用汇编语言进行编程，还可以利用伪指令让汇编器帮我们做好更多的事。另一个有趣的工具是\textbf{反汇编器（disassembler）}，它能将机器语言转换为汇编语言，方便我们阅读（见图 \ref{pic:asm}，它是反汇编的结果）。汇编器和反汇编器的存在，说明了\textbf{机器码和汇编指令的一一对应关系}。
+
+需要额外注意的是，讨论机器语言和汇编语言，一定有明确的\textbf{指令集}，常见的指令集有 x86、ARM。可见，使用汇编语言进行编程一定与 CPU 高度相关，故\textbf{使用汇编语言编写的程序难以在不同处理器平台间移植。}
+
+\begin{note}
+	能使用汇编语言编写大型工程吗？据说最早 的 WPS 文字处理软件就是完全用汇编语言编写的。
+\end{note}
+
+\subsection{高级语言}
+
+\textbf{高级语言（high-level language）}解决了汇编语言可移植性差、学习困难的问题。“高级”与“底层”相对，指脱离硬件层面，故高级语言本身不涉及任何指令集。高级语言中往往包含表达式，编写者可以用日常解决数学问题的思维编写代码。例如，计算下式：
+$$
+1 + \biggl( \sqrt{8} \sum\limits_{n = 0}^\infty \dfrac{(1103 + 26390 n) (2n - 1)!! (4n - 1)!!}{99^{4n + 2} 32^n (n!)^3} \biggr) + 1
+$$
+
+拉马努金告诉你：
+$$
+\sqrt{8} \sum\limits_{n = 0}^\infty \dfrac{(1103 + 26390 n) (2n - 1)!! (4n - 1)!!}{99^{4n + 2} 32^n (n!)^3} = \dfrac{1}{\pi}
+$$
+
+如果使用汇编语言编写相关的计算代码，程序员首先需要考虑将结果放在哪个寄存器中，然后手动分解该算式，写出以下\textbf{示意}代码：
+
+\begin{lstlisting}[language=assembly, numbers=none]
+mov    某个寄存器, 0				; 把初值 0 放入寄存器中。
+add    某个寄存器, 1				; 加上第一个 1。
+call   ask_Ramanujan				; 答案放在另一个寄存器里。
+add    某个寄存器, 另一个寄存器		; 加上答案。
+add    某个寄存器, 1				; 加上最后一个 1。
+; 答案在“某个寄存器”中。
+\end{lstlisting}
+
+以上代码只能在 x86 架构的处理器上运行！但如果使用高级语言编写，只需写以下 Python
+代码，就可以在任何实现了 Python 解释器\footnote{Python 是解释型语言，并不会生成可执行文件。}的处理器上运行：
+
+\begin{lstlisting}[language=Python, numbers=none, emph={[2]ask_Ramanujan}]
+answer = 1 + ask_Ramanujan() + 1  # 答案在 answer 中。
+\end{lstlisting}
+
+有了高级语言这一利器后，人们能够更加方便地进行\textbf{面向过程编程（process-oriented programming）}了。进一步，人们提出了\textbf{面向对象编程（object-oriented programming）}、\textbf{函数式编程（functional programming）}等更高级的编程范式（paradigm）。
+
+我们之后只学习高级语言程序设计，在熟练掌握面向过程编程的基础上掌握面向对象编程的基本概念、基本思路、基本方法，最后对其他程序设计相关内容做简单介绍。
+
+\subsection{自然语言与高级语言}
+
+2019 年，「文言」编程语言发布\footnote{\url{https://github.com/wenyan-lang/wenyan}。}。下面是一段示例代码\footnote{在 \url{https://zxch3n.github.io/wenyanizer/} 由其他语言转换而来。}：
+
+\begin{lstlisting}[language={}, numbers=none]
+吾有一術。名之曰「問拉馬努金」
+欲行是術。必先得
+乃行是術曰。
+	除一以「派」。
+	名之曰「返回值」。
+	乃得 「返回值」。
+是謂「問拉馬努金」之術也。
+
+噫。吾有一數。曰又。名之曰「結果」。
+施「問拉馬努金」。
+加一以其。
+名之曰「二甲」。
+加「二甲」以一。
+昔之「結果」者。今其是矣。
+\end{lstlisting}
+
+「文言」虽然不支持数学表达式，但它与指令集无关，仍然是高级语言。阅读上面的代码，我们可以承认「文言」的代码是自然语言，\textbf{但「文言」并不接受所有自然语言作为输入，所以「文言」并不是“自然语言编程”}。不能进行“自然语言编程”的原因之一是自然语言的语法无法被计算机无二义性地解析，另一个原因是自然语言的语义分析十分困难。使用计算机处理自然语言被称为自然语言处理（Natural Language Processing, NLP），是目前人工智能火热的研究方向。
+
+可以被计算机接受的代码必须满足严格的语法，但对于学习者而言，这一过程反而类似于让计算机学习自然语言：多练，而无需太过严格地学习其中的语法规则。
+
+\pagebreak
