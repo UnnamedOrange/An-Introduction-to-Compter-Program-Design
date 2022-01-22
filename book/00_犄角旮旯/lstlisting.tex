@@ -1,3 +1,5 @@
+\newcommand{\emptyaccsupp}[1]{\BeginAccSupp{ActualText={}}#1\EndAccSupp{}}
+
 \definecolor{typecolor}{HTML}{2B91AF}
 \definecolor{funccolor}{HTML}{74531F}
 \definecolor{macrocolor}{HTML}{8A1BFF}
@@ -7,7 +9,7 @@
 	numbers = left,
 	breaklines = true,
 	keywordstyle = \color[RGB]{40,40,255},
-	numberstyle = \scriptsize\color{darkgray},
+	numberstyle = \scriptsize\color{darkgray}\emptyaccsupp,
 	basicstyle = \normalsize\ttfamily,
 	commentstyle = \normalsize\color[RGB]{0,128,0},
 	stringstyle = \normalsize\slshape\color[RGB]{128,0,0},
@@ -15,13 +17,15 @@
 	morekeywords={%
 	},
 	emphstyle=\color{typecolor},
-	emph={%
+	moreemph={%
 	},
 	emphstyle={[2]\color{funccolor}},
-	emph={[2]%
+	moreemph={[2]%
+	main,%
+	printf, scanf, sprintf, scanf,%
 	},
 	emphstyle={[3]\color{macrocolor}},
-	emph={[3]%
+	moreemph={[3]%
 	},
 }
 \lstdefinelanguage{assembly}{

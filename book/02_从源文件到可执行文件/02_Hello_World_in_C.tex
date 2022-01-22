@@ -1,6 +1,34 @@
 % Licensed under the Creative Commons Attribution Share Alike 4.0 International.
 % See the LICENSE file in the repository root for full license text.
 
-\section{“Hello, World!” in C}
+\section{“Hello, world!” in C}
+
+\subsection{第一个程序}
+
+本书中，我们首先将要学习的高级语言是 C 语言。按照惯例，学习任何语言编写的第一个程序都是 “Hello, world!”，其作用是以任何形式在屏幕上显示 “Hello, world!” 这一句话。C 语言的 “Hello, world!” 程序如下所示。
+
+\program[program:helloworld]{Hello, world!}
+\begin{lstlisting}[language=c]
+#include <stdio.h>
+
+int main()
+{
+	printf("Hello, world!");
+}
+\end{lstlisting}
+
+本节我们关注如何在个人计算机上编写以上 C 语言程序，并将其转变为可以被计算机执行的程序。今天，人们一般在\textbf{集成开发环境（Integrated Development Environment, IDE）}中编写代码，集成开发环境的主要功能包括：
+\begin{itemize}
+	\item \textbf{代码编辑器（code editor）}。专用于编写代码的文本编辑器，拥有代码高亮、括号自动匹配、空格自动缩进、代码自动补全等功能。
+	\item \textbf{生成工具（build tool）}。生成工具将源代码处理为可以直接在当前计算机上运行的可执行文件或有其他用途的中间文件。尽管生成可执行文件需要经过编译（compile）和链接（link）这两大步骤（见下节“\nameref{sec:compile_and_link}”），但是我们也常称生成工具为\textbf{编译器（compiler）}。
+	\item \textbf{调试器（debugger）}。用于辅助代码编写人员排除代码中的错误，这个过程也称为\textbf{调试（debug）}。
+	\item 资源管理。可以在 IDE 中管理\textbf{项目（又称工程）（project）}中的包含的源代码文件、资源文件等等。
+\end{itemize}
+
+对于个人开发者而言，完全可以按个人喜好进行 IDE 的选择。甚至还可以不使用 IDE，只使用支持扩展的代码编辑器\footnote{例如开源免费的 Visual Studio Code。}，这些扩展将帮助用户调用来自外部的编译器、调试器等。为了方便教学，本书使用 Visual Studio 这一 IDE 作为开发工具。
+
+\subsection{安装 Visual Studio}
+
+
 
 \pagebreak

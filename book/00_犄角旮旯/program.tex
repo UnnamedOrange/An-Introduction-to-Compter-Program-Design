@@ -1,0 +1,9 @@
+\newcounter{program}
+\newcommand{\programname}{程序}
+\newcommand{\program}[2][]{%
+\vspace{-0.8\baselineskip}
+\begin{center}
+	\textbf{\color{structurecolor}{\programname} \refstepcounter{program}\label{#1}\arabic{program}\ifthenelse{\isempty{#1}}{}{: }}{#2}
+\end{center}
+\vspace{-0.8\baselineskip}
+}
