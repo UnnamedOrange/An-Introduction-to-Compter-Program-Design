@@ -1,6 +1,397 @@
 % Licensed under the Creative Commons Attribution Share Alike 4.0 International.
 % See the LICENSE file in the repository root for full license text.
 
-% \begin{problemset}
-% 	\item
-% \end{problemset}
+\begin{problemset}
+	\item lowbit。阅读下面的代码。
+
+	\begin{lstlisting}[language=c]
+#include <stdio.h>
+
+int main()
+{
+	signed char x;
+	{
+		int input;
+		scanf("%d", &input);
+		x = input;
+	}
+	printf("%d\n", (signed char)(x & (-x)));
+}
+	\end{lstlisting}
+
+	其中，\lstinline{&} 表示按位与，含义是将两个二进制整数的每一位依次进行“与运算”，“与运算”的真值表为：
+	\begin{table}[H]
+		\centering
+		\begin{tabular}{c|c|c|}
+			& 0 & 1
+			\\\hline
+			0 & 0 & 0
+			\\\hline
+			1 & 0 & 1
+			\\\hline
+		\end{tabular}
+	\end{table}
+
+	即均为 1 才为 1，否则为 0。
+
+	\begin{enumerate}
+		\item 从第 8 行可以看到，该程序运行时需要输入一个整数。若第 9 行对 \lstinline{x} 赋值后 \lstinline{x} 表示的整数与输入的整数相等，则输入的整数的范围应当是？
+
+		\item \lstinline[language=c]{(signed char)(...)} 表示将括号内的值强制转换为 \lstinline[language=c]{signed char} 类型，转换规则是将括号内的整数直接截断为最低的 8 个二进制位。以下四个表达式的计算结果是？
+
+		\begin{lstlisting}[language=c, numbers=none]
+(signed char)(114)
+(signed char)(514)
+(signed char)(1145 + 14)
+(signed char)(114514)
+		\end{lstlisting}
+
+		\item 向该程序输入以下数字，输出结果分别是多少？
+
+		\begin{lstlisting}[numbers=none]
+256
+		\end{lstlisting}
+		\begin{lstlisting}[numbers=none]
+128
+		\end{lstlisting}
+		\begin{lstlisting}[numbers=none]
+114
+		\end{lstlisting}
+		\begin{lstlisting}[numbers=none]
+514
+		\end{lstlisting}
+
+		提示：先利用上一小问求出 \lstinline{x} 的值，然后计算表达式 \lstinline{x & (-x)}，最后利用上一小问求得输出。
+
+		\item 该程序的输出的含义是什么？
+
+		提示：利用二进制进行分析。
+	\end{enumerate}
+
+	\item 浮点数的运算结果与运算速度。将以下代码输入到你的代码编辑器中。
+
+	\begin{lstlisting}[language=c, moreemph={[1]clock_t}, moreemph={[2]clock}, moreemph={[3]CLOCKS_PER_SEC}]
+#include <stdio.h>
+#include <time.h>
+
+int main()
+{
+	// 输入部分 开始
+	// 这道题没有输入
+	// 输入部分 结束
+	clock_t start_time = clock();
+	// 运算部分 开始
+
+	// 运算部分 结束
+	printf("%.3f seconds elapsed\n",
+		(double)(clock() - start_time) / CLOCKS_PER_SEC);
+}
+	\end{lstlisting}
+
+	提示：你可以不输入代码中的注释。
+
+	\begin{enumerate}
+		\item 该程序的第 14 行有一个表达式。仿照它写出以下表达式：
+
+		\begin{lstlisting}[language=c, numbers=none]
+(double)1500L / 1000L
+		\end{lstlisting}
+
+		回答下列问题：
+		\begin{enumerate}
+			\item 该表达式中，\lstinline{1500L} 里的 \lstinline{L} 的含义或作用是什么？
+			\item 该表达式的计算结果是什么？
+			\item 该表达式中，\lstinline[language=c]{(double)} 的直接作用是什么？将它去掉后，表达式的计算结果又是多少？
+		\end{enumerate}
+
+		\item 该程序的作用是对运算部分的代码进行计时。在运算部分键入以下代码：
+
+		\begin{lstlisting}[language=c, firstnumber=11]
+	float number = 0.0f;
+	for (int i = 0; i < 1000000000; i++)
+	{
+		float temp = 0.1f;
+		temp *= 0.1f;
+		number += temp;
+	}
+	printf("%f\n", number);
+		\end{lstlisting}
+
+		\textbf{在 Debug 配置下}运行程序，程序的输出是什么？
+
+		\item 在运算部分键入以下代码：
+
+		\begin{lstlisting}[language=c, firstnumber=11]
+	double number = 0.0;
+	for (int i = 0; i < 1000000000; i++)
+	{
+		double temp = 0.1;
+		temp *= 0.1;
+		number += temp;
+	}
+	printf("%f\n", number);
+		\end{lstlisting}
+
+		\textbf{在 Debug 配置下}运行程序，程序的输出是什么？
+
+		\item 对以上两小问的程序输出进行解释。对比以上两问程序的运行时间，你能得出什么结论？
+
+		提示：人类常把圆周率 $\pi$ 近似为 $3.14$，而很少把 $\pi$ 近似为 $3.14159265358979323846264$，原因是后者不适合人类进行计算，而前者的精度已经满足了人类在部分场景下的需求。
+		% 参考：https://blog.csdn.net/u010839382/article/details/52775863
+	\end{enumerate}
+
+	\item \lstinline[language=c]{switch-case} 语句。将以下代码输入到你的代码编辑器中。
+
+	\begin{lstlisting}[language=c]
+#include <stdio.h>
+
+int main()
+{
+	int clause;
+	scanf("%d", &clause);
+	switch (clause)
+	{
+	case 0:
+		printf("Zero\n");
+		break;
+	case 2:
+		printf("One\n");
+	case 1:
+		printf("One\n");
+		break;
+	case 3:
+		printf("Three\n");
+	default:
+		printf("Others\n");
+		break;
+	}
+}
+	\end{lstlisting}
+
+	\lstinline[language=c]{switch-case} 语句是 C 语言支持的一种\textbf{分支结构}，完成以下任务。
+
+	\begin{enumerate}
+		\item 向该程序输入以下数字，输出结果分别是多少？对于每一个输入，调试程序，从第 7 行开始记录之后完整的当前行变化情况。
+		\begin{lstlisting}[numbers=none]
+0
+		\end{lstlisting}
+		\begin{lstlisting}[numbers=none]
+1
+		\end{lstlisting}
+		\begin{lstlisting}[numbers=none]
+2
+		\end{lstlisting}
+		\begin{lstlisting}[numbers=none]
+3
+		\end{lstlisting}
+		\begin{lstlisting}[numbers=none]
+4
+		\end{lstlisting}
+
+		提示：为了便于理解题意，下面给出输入为 \lstinline{4} 时的答案，所以\textbf{你只需要给出输入为 \lstinline{0, 1, 2, 3} 时的答案。}但你应该首先检查输入为 \lstinline{4} 时情况是否与以下答案符合。
+
+		\begin{enumerate}
+			\item 直接运行程序，输入 \lstinline{4}，得到程序的输出结果为 \lstinline{Others}（可以忽略行末空格与文末回车）。
+			\item 在第 7 行下断点，然后点击调试程序，输入 \lstinline{4}，程序暂停，当前行为第 7 行。
+			\item 点击逐语句，当前行为第 20 行。
+			\item 点击逐语句，当前行为第 23 行。程序运行结束。
+		\end{enumerate}
+
+		\item 根据第一小问的答案说明 \lstinline[language=c]{switch-case} 语句中 \lstinline[language=c]{case} 和 \lstinline[language=c]{break} 语句的作用。
+
+		\item 该程序有一处 \lstinline[language=c]{break} 语句是多余的，指出它，并说明它多余的原因。
+
+		\item 假设该程序想要实现的效果是：输入一个整数，若这个整数为 \lstinline{0, 1, 2, 3}，则输出一些英文单词，这些英文单词对应的数的和等于输入的数；若这个整数为其他值，则输出 \lstinline{Others}。根据第一小问的答案，可以发现程序没有按预期工作。添加一个 \lstinline[language=c]{break} 语句即可修正该错误，指出应当在哪里添加这个 \lstinline[language=c]{break} 语句。
+
+		\item 不使用 \lstinline[language=c]{switch-case} 语句，改写该程序，使得程序的运行结果在任何输入下都保持不变（与经过上一小问的修正后的程序相比）。
+	\end{enumerate}
+
+	\item 自增自减运算符。C 语言创新地提出了以下四个运算符：
+	\begin{itemize}
+		\item 前置自增运算符（\lstinline{++A}）。语句 \lstinline[language=c, moreemph={[2]f}]{f(++x);} 等价于：
+
+		\begin{lstlisting}[language=c, numbers=none, moreemph={[2]f}]
+x += 1;
+f(x);
+		\end{lstlisting}
+
+		\item 后置自增运算符（\lstinline{A++}）。语句 \lstinline[language=c, moreemph={[2]f}]{f(x++);} 等价于：
+
+		\begin{lstlisting}[language=c, numbers=none, moreemph={[2]f}]
+f(x);
+x += 1;
+		\end{lstlisting}
+
+		\item 前置自减运算符（\lstinline{--A}）。运算规则类似于前置自增运算符。
+
+		\item 后置自减运算符（\lstinline{A--}）。运算规则类似于后置自增运算符。
+	\end{itemize}
+
+	它们统称为\textbf{自增自减运算符}，因为能简化代码而在 C 语言中得到广泛运用。完成以下任务。
+
+	\begin{enumerate}
+		\item 若 \lstinline{x} 是 C 语言中的一个变量，初值为 \lstinline{0}，则表达式 \lstinline{x++} 的值是多少？表达式 \lstinline{++x} 的值又是多少？
+
+		提示：考虑定义 \lstinline[language=c, moreemph={[2]f}]{f} 为：
+
+		\begin{lstlisting}[language=c, numbers=none, moreemph={[2]f}]
+void f(int number)
+{
+	printf("%d\n", number);
+}
+		\end{lstlisting}
+
+		\item 含有自增自减运算符的表达式一定具有副作用，计算表达式时一定会改变程序中某些变量的值，\textbf{如果将多个有副作用的表达式混在一起进行计算，则可能产生程序员难以预料的结果}。运行以下程序，记录输出结果。
+
+		\begin{lstlisting}[language=c]
+#include <stdio.h>
+
+int main()
+{
+	int x;
+	x = 114;
+	x = ++x + x;
+	printf("%d\n", x);
+
+	x = 114;
+	x = x++ + x--;
+	printf("%d\n", x);
+}
+		\end{lstlisting}
+
+		提示：只需要记录，不需要解释。
+
+		\item 网络上相传，C 语言有一个“趋向于运算符”（\lstinline{-->}）。
+
+		\begin{lstlisting}[language=c]
+#include <stdio.h>
+
+int main()
+{
+	int x = 5;
+	while (x --> 0)
+	{
+		printf("%d\n", x);
+	}
+}
+		\end{lstlisting}
+
+		事实上，所谓“趋向于运算符”是两个运算符：后置自减运算符、大于运算符。不使用自减运算符，写出以上程序的等价程序，使得程序的运行结果保持不变。
+	\end{enumerate}
+
+	\item 时间复杂度。首先阅读下面的代码。
+
+	\begin{lstlisting}[language=c]
+#include <stdio.h>
+
+int main()
+{
+	int n;
+	scanf("%d", &n);
+	int counter = 0;
+	{ // 计数 开始
+		counter++;
+	} // 计数 结束
+	printf("%d\n", counter);
+}
+	\end{lstlisting}
+
+	该程序执行的指令数与输入 \lstinline{n} 无关，所以这个程序的（渐进）时间复杂度可以记为 $O(1)$。
+
+	\begin{enumerate}
+		\item 将该程序的计数部分（第 9 行）替换为以下代码。
+
+		\begin{lstlisting}[language=c, firstnumber=9]
+		for (int i = 1; i <= n; i++)
+			counter++;
+		\end{lstlisting}
+
+		则程序执行的指令数可以被变量 \lstinline{counter} 的值的有限倍数控制，而 \lstinline{counter} 的值与输入 \lstinline{n} 有关。程序的时间复杂度是多少？请使用大 $O$ 记号表示，但请尽可能地接近下确界。规定自变量为 $n$。
+
+		\item 将该程序的计数部分替换为以下代码。
+
+		\begin{lstlisting}[language=c, firstnumber=9]
+		for (int i = 1; i <= n; i++)
+			for (int j = 1; j <= i; j++)
+				counter++;
+		\end{lstlisting}
+
+		则程序执行的指令数可以被变量 \lstinline{counter} 的值的有限倍数控制。问题同上一小问。
+
+		\item 将该程序的计数部分替换为以下代码。
+
+		\begin{lstlisting}[language=c, firstnumber=9]
+		for (int i = 1; i <= n; i++)
+			for (int j = 1; j <= n; j += i)
+				counter++;
+		\end{lstlisting}
+
+		运行程序，并使用计算器计算，填写下面的表格（已帮你填写了第一列）。
+
+		\begin{table}[H]
+			\centering
+			\begin{tabular}{|c|c|c|c|c|c|c|}
+				\hline
+				$n$ & 100 & 1000 & 10000 & 100000 & 1000000 & 10000000
+				\\\hline
+				\lstinline$counter$ & 573 & \phantom{8053} & \phantom{103643} & \phantom{1266714} & \phantom{14969985} & \phantom{172725300}
+				\\\hline
+				$n \ln n$ & 460.5 & \phantom{6907.8} & \phantom{92103.4} & \phantom{1151292.5} & \phantom{13815510.6} & \phantom{161180956.5}
+				\\\hline
+				$\phantom{\Biggl|} \dfrac{\text{\lstinline$counter$}}{n \ln n} \phantom{\Biggr|}$ & 1.244 & \phantom{1.166} & \phantom{1.125} & \phantom{1.100} & \phantom{1.084} & \phantom{1.072}
+				\\\hline
+			\end{tabular}
+		\end{table}
+
+		根据以上表格，猜测程序的时间复杂度是多少？请使用大 $O$ 记号表示，但请尽可能地接近下确界。规定自变量为 $n$。
+	\end{enumerate}
+
+	\item 在线评测平台题单。
+
+	\begin{enumerate}
+		\item 在在线评测平台（OJ）上完成下面的所有题目，得到 Accepted（AC）的反馈。其中的“自选”表示你自己感兴趣的其他题目，也必须完成。自选的题目不限制 OJ 平台。
+		\item 从下面的题目中选择 2 道（包括自选）撰写题解。题解应当包含题意解析、你的分析思路、你遇到的问题、你的标准解法。
+	\end{enumerate}
+
+	\begin{table}[H]
+		\centering
+		\begin{tabular}{|c|c|c|}
+			\hline
+			题号 & 题目名称 & 备注
+			\\\hline
+			\href{https://www.luogu.com.cn/problem/P5710}{洛谷 P5710} & 数的性质 & 逻辑运算符
+			\\\hline
+			\href{https://www.luogu.com.cn/problem/P1085}{洛谷 P1085} & 不高兴的津津 & 使用循环结构
+			\\\hline
+			\href{https://www.luogu.com.cn/problem/P1909}{洛谷 P1909} & 买铅笔 & 仔细读题，只买同一种包装的铅笔
+			\\\hline
+			\href{https://www.luogu.com.cn/problem/P1046}{洛谷 P1046} & 陶陶摘苹果 &
+			\\\hline
+			\href{https://www.luogu.com.cn/problem/P5718}{洛谷 P5718} & 找最小值 & 注意与找最大值的区别
+			\\\hline
+			\href{https://www.luogu.com.cn/problem/P5719}{洛谷 P5719} & 分类平均 & 输出一位小数的格式化说明符为 \lstinline[language=c]$"%.1f"$
+			\\\hline
+			\href{https://www.luogu.com.cn/problem/P5720}{洛谷 P5720} & 一尺之棰 &
+			\\\hline
+			\href{https://www.luogu.com.cn/problem/P1980}{洛谷 P1980} & 计数问题 & \lstinline[language=c]$x % 10$ 即为 \lstinline$x$ 的个位
+			\\\hline
+			\href{https://www.luogu.com.cn/problem/P1035}{洛谷 P1035} & 级数求和 &
+			\\\hline
+			\href{https://www.luogu.com.cn/problem/P2669}{洛谷 P2669} & 金币 & 牺牲时间复杂度免去公式推导，反之则可免去循环设计
+			\\\hline
+			\href{https://www.luogu.com.cn/problem/P1075}{洛谷 P1075} & 质因数分解 & 注意时间复杂度
+			\\\hline
+			自选 & &
+			\\\hline
+			自选 & &
+			\\\hline
+			自选 & &
+			\\\hline
+		\end{tabular}
+	\end{table}
+
+	提示：非自选题目虽然较多，但难度不高。要覆盖所有知识点请自行复习。
+
+	提示：在线评测平台为黑盒测试，只要程序在给定输入的情况下给出正确输出就算通过。
+
+\end{problemset}
