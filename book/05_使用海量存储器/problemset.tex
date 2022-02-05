@@ -2,5 +2,398 @@
 % See the LICENSE file in the repository root for full license text.
 
 \begin{problemset}
-	\item
+	\item 线性筛。阅读下面的代码。
+
+	\begin{lstlisting}[language=c, moreemph={[2]sieve}]
+#include <stdio.h>
+
+int prime[664580];
+int isntPrime[(int)1e7 + 1];
+void sieve()
+{
+	prime[0] = 0;
+	for (int i = 2; i <= (int)1e7; i++)
+	{
+		if (!isntPrime[i])
+			prime[++prime[0]] = i;
+		for (int j = 1, s = i * prime[j];
+			j <= prime[0] && s <= (int)1e7; j++, s = i * prime[j])
+		{
+			isntPrime[s] = 1;
+			if (!(i % prime[j]))
+				break;
+		}
+	}
+}
+
+int main()
+{
+	sieve();
+	for (int i = 1; i <= 25; i++)
+		printf("%d ", prime[i]);
+}
+	\end{lstlisting}
+
+	\begin{enumerate}
+		\item 这个程序会输出一些整数。这些整数的含义是什么？
+
+		提示：你可以查阅变量名的中文翻译，也可以运行程序。
+
+		\item 仔细阅读 \lstinline[language=c, moreemph={[2]sieve}]{sieve} 函数（第 7-19 行），回答：
+		\begin{enumerate}
+			\item \lstinline{isntPrime} 数组的含义是什么？
+			\item \lstinline{isntPrime} 数组的大小需要在一千万的基础上加一的原因是什么？
+			\item \lstinline[language=c, moreemph={[2]sieve}]{sieve} 函数的作用是什么？
+			\item \lstinline{prime[0]} 的含义是什么？
+			\item \lstinline{prime} 数组的大小 \lstinline{664580} 的含义是什么？
+		\end{enumerate}
+
+		\item 已知该程序执行的指令数可以被第 15 行代码执行次数的有限倍数控制。想办法估计该程序的时间复杂度。规定自变量为 $n$，该代码中 $n = 10^7$。
+
+		\begin{lstlisting}[language=c, firstnumber=15]
+			isntPrime[s] = 1;
+		\end{lstlisting}
+
+		提示：记录这句代码被执行的次数。
+	\end{enumerate}
+
+	\item 冒泡排序。阅读下面的代码。
+
+	\begin{lstlisting}[language=c, moreemph={[2]bubble_sort}]
+#include <stdio.h>
+
+void bubble_sort(int* a, int n)
+{
+	for (int i = 0; i < n - 1; i++)
+		for (int j = 0; j < n - 1; j++)
+			if (a[j] > a[j + 1])
+			{
+				int t = a[j];
+				a[j] = a[j + 1];
+				a[j + 1] = t;
+			}
+}
+
+int a[10005];
+
+int main()
+{
+	int n;
+	scanf("%d", &n);
+	for (int i = 0; i < n; i++)
+		scanf("%d", a + i);
+	bubble_sort(a, n);
+	for (int i = 0; i < n; i++)
+		printf("%d ", a[i]);
+}
+	\end{lstlisting}
+
+	函数 \lstinline[language=c, moreemph={[2]bubble_sort}]{bubble_sort} 的作用是将数组 \lstinline{a} 从小到大排序。回答下面的问题。
+
+	\begin{enumerate}
+		\item 对该程序输入以下内容。
+
+		\begin{lstlisting}[numbers=none]
+6
+1 1 4 5 1 4
+		\end{lstlisting}
+
+		该程序会输出什么？
+
+		\item 数组 \lstinline{a} 为什么要定义为全局变量？
+
+		\item 仔细阅读 \lstinline[language=c, moreemph={[2]bubble_sort}]{bubble_sort} 函数（第 5-12 行），回答：
+		\begin{enumerate}
+			\item 该程序的时间复杂度是多少？
+			\item 这个函数（即冒泡排序）的思路是什么？
+			\item 第 6 行中 \lstinline{n} 额外减去 \lstinline{1} 的原因是什么？
+			\item 第 5 行中 \lstinline{n} 额外减去 \lstinline{1} 的原因是什么？
+			\item 第 6 行的循环条件（\lstinline[language=c]{j < n - 1}）可以稍作修改，使得循环次数更少，但程序仍然正确。可以改成什么？修改后，程序的时间复杂度是多少？
+		\end{enumerate}
+
+		提示：弄清楚冒泡排序的思路才能轻松地回答后面的问题。
+
+		\item 补全下面的程序，实现对英文单词按字典序从小到大进行排序（假设输入的单词都是小写，没有空格，单词的长度不超过 79）。
+
+		\begin{lstlisting}[language=c, moreemph={[2]bubble_sort_for_string}]
+#include <stdio.h>
+#include <string.h>
+
+void bubble_sort_for_string(char(*strings)[80], int n)
+{
+	// 补全这里
+}
+
+char strings[20][80];
+
+int main()
+{
+	int n;
+	scanf("%d", &n);
+	for (int i = 0; i < n; i++)
+		scanf("%s", strings + i);
+	bubble_sort_for_string(strings, n);
+	for (int i = 0; i < n; i++)
+		printf("%s\n", strings[i]);
+}
+		\end{lstlisting}
+
+		样例输入：
+		\begin{lstlisting}[numbers=none]
+4
+xyz
+abandon
+abc
+zone
+		\end{lstlisting}
+
+		样例输出：
+		\begin{lstlisting}[numbers=none]
+abandon
+abc
+xyz
+zone
+		\end{lstlisting}
+
+		补全后的程序的时间复杂度是多少？规定自变量为字符串数量 $n$ 和字符串最大长度 $m$（本小问中 $m$ 取固定值 80，但分析时间复杂度时规定字符串最大长度是一个变量）。
+
+		提示：\lstinline[language=c, moreemph={[2]bubble_sort_for_string}]{bubble_sort_for_string} 函数的第一个参数 \lstinline{strings} 是一个指向长度为 80 的字符数组的指针，可以像 \lstinline[language=c]{int*} 使用。
+	\end{enumerate}
+
+	\item 交错数组。阅读下面的代码。
+
+	\begin{lstlisting}[language=c, moreemph={[2]create, destroy, malloc, free}]
+#include <stdio.h>
+#include <string.h>
+#include <stdlib.h>
+
+int** create(int n)
+{
+	int** root = (int**)malloc(sizeof(int*) * n);
+	for (int i = 0; i < n; i++)
+		root[i] = (int*)malloc(sizeof(int) * (i + 1));
+	return root;
+}
+
+void destroy(int** root, int n)
+{
+	for (int i = 0; i < n; i++)
+		free(root[i]);
+	free(root);
+}
+
+int main()
+{
+	int n;
+	scanf("%d", &n);
+
+	{
+		int** C = create(n);
+		C[0][0] = C[1][0] = C[1][1] = 1;
+		for (int i = 2; i < n; i++)
+		{
+			C[i][0] = C[i][i] = 1;
+			for (int j = 1; j < i; j++)
+				C[i][j] = C[i - 1][j - 1] + C[i - 1][j];
+		}
+
+		for (int i = 0; i < n; i++)
+		{
+			for (int j = 0; j < i; j++)
+				printf("%d ", C[i][j]);
+			printf("\n");
+		}
+		destroy(C, n);
+	}
+}
+	\end{lstlisting}
+
+	回答下面的问题。
+
+	\begin{enumerate}
+		\item 假设解决方案平台为“x64”，求以下三个表达式的值。
+
+		\begin{lstlisting}[language=c, numbers=none]
+// int** C;
+sizeof(C);
+sizeof(C[0]);
+sizeof(C[0][0]);
+		\end{lstlisting}
+
+		\item 仔细阅读 \lstinline[language=c, moreemph={[2]create}]{create} 函数（第 7-10 行）。假设解决方案平台为“x64”，以 $n$ 为自变量，该函数动态申请了多少字节的堆空间？
+
+		\item 假设输入 $n \le 5000$，使用一个全局的二维数组代替动态内存分配，则这个数组的大小至少是多少？至少占用多少字节的空间？
+
+		\item 该程序的作用是输出著名的杨辉三角，\lstinline{C} 表示组合数。
+
+		\begin{enumerate}
+			\item 该程序的时间复杂度是多少（以 $n$ 为自变量，使用大 $O$ 记号表示，尽可能接近上确界）？
+			\item 如果要求只输出一个组合数 $\mathrm C_n^m$，则对于该程序而言只需要修改程序的输出部分（第 35-40 行）。但该程序的时间复杂度太高，所以请设计一个时间复杂度为 $O(n)$ 的算法解决只输出一个组合数的问题，并使用 C 语言编写一个完整程序（\textbf{不考虑整数溢出}）。
+
+			提示：组合数的通项公式为：
+			$$
+			\mathrm C_n^m = \dfrac{n!}{m! (n - m)!}
+			$$
+		\end{enumerate}
+	\end{enumerate}
+
+	\item \lstinline[language=c, moreemph={[2]memset}]{memset} 函数。\lstinline[language=c, moreemph={[2]memset}]{memset} 函数的作用是将一片内存区域\textbf{以字节为单位}进行填充，使用时首先需要包含 \lstinline{string.h} 头文件。回答下面的问题。
+
+	\begin{enumerate}
+		\item 有人写出了以下代码。
+
+		\begin{lstlisting}[language=c, numbers=none, moreemph={[2]memset}]
+	int a;
+	memset(&a, 0xcc, sizeof(a));
+		\end{lstlisting}
+
+		\lstinline[language=c, moreemph={[2]memset}]{memset} 后，变量 \lstinline{a} 的值变成了 \lstinline{0xcccccccc}。解释 \lstinline[language=c, moreemph={[2]memset}]{memset} 的三个参数的含义。
+
+		提示：你可以通过多种途径得到它们的含义。
+
+		\item 有人写出了以下代码。
+
+		\begin{lstlisting}[language=c, moreemph={[2]memset, malloc, free}]
+#include <stdio.h>
+#include <stdlib.h>
+#include <string.h>
+
+int main()
+{
+	int* p = malloc(sizeof(int) * 114514);
+	memset(p, 0, sizeof(p));
+	for (int i = 0; i < 114514; i++)
+		printf("%d\n", p[i]); // 期望输出 0。
+	free(p);
+}
+		\end{lstlisting}
+
+		这段代码错误地使用了 \lstinline[language=c, moreemph={[2]memset}]{memset} 函数，请修正这个问题。已知 \lstinline[language=c, moreemph={[2]malloc}]{malloc} 函数为我们分配的空间默认是没有被初始化的。
+	\end{enumerate}
+
+	\item 小端字序与大端字序。阅读下面的代码。
+
+	\begin{lstlisting}[language=c, moreemph={[1]uint8_t, uint16_t, uint32_t, uint64_t, MyUInt64}, moreemph={[2]putchar}]
+#include <stdio.h>
+#include <stdint.h>
+
+typedef union
+{
+	uint8_t bytes[8];
+	uint16_t words[4];
+	uint32_t dwords[2];
+	uint64_t qword;
+} MyUInt64;
+
+int main()
+{
+	MyUInt64 n;
+	scanf("%llu", &n);
+	for (int i = 0; i < 8; i++)
+		printf("%02x ", n.bytes[i]);
+	putchar('\n');
+	for (int i = 0; i < 4; i++)
+		printf("%04x ", n.words[i]);
+	putchar('\n');
+	for (int i = 0; i < 2; i++)
+		printf("%08x ", n.dwords[i]);
+	putchar('\n');
+	printf("%016llx\n", n.qword);
+}
+	\end{lstlisting}
+
+	回答下面的问题。
+
+	\begin{enumerate}
+		\item 该程序中的类型 \lstinline[language=c, moreemph={[1]MyUInt64}]{MyUInt64} 占用多少字节的空间？
+		\item 运行该程序，输入 \lstinline{114514114514114514}，记录程序的输出。
+		\item 根据上一小问的运行结果猜测格式化说明符 \lstinline[language=c]{"%02x"} 的含义。
+		\item 对于一个占用多个字节的整数，如果整数的低位对应的地址比整数的高位对应的地址要小，则称这是\textbf{小端字序（little endian）}；反之称为\textbf{大端字序（big endian）}。根据第二小问的运行结果判断你的计算机编译出的 C 语言程序采用的是小端字序还是大端字序，并说明理由。
+	\end{enumerate}
+
+	\item 位段与内存对齐。
+
+	\begin{enumerate}
+		\item 位段。C 语言的结构体允许定义长度为若干比特的整数，方法是在整数变量的定义之后加上一个冒号（\lstinline{:}），后面再接上比特位宽（不能超过对应整数类型的比特数）。整数是否有符号继承自原类型。
+
+		例如，可以写出以下代码。
+
+		\begin{lstlisting}[language=c]
+#include <stdio.h>
+
+int main()
+{
+	struct
+	{
+		unsigned on_off : 1; // 开关，取值为无符号的 0 和 1。
+		signed a_number : 7; // 7 位有符号整数。
+	} t;
+	t.on_off = 1;
+	for (int i = -128; i < 127; i++)
+		printf("%d ", t.a_number = i);
+}
+		\end{lstlisting}
+
+		\lstinline{t.a_number} 表示的整数的范围是多少？
+
+		\item 内存对齐。运行以下程序。
+		\begin{lstlisting}[language=c]
+#include <stdio.h>
+
+int main()
+{
+	struct
+	{
+		unsigned on_off : 1; // 开关，取值为无符号的 0 和 1。
+		signed a_number : 7; // 7 位有符号整数。
+	} t;
+	printf("%d\n", (int)sizeof(t));
+}
+		\end{lstlisting}
+
+		程序输出了什么？尝试解释输出结果。
+	\end{enumerate}
+
+	\item 在线评测平台题单。
+
+	\begin{enumerate}
+		\item 在在线评测平台（OJ）上完成下面的所有题目，得到 Accepted（AC）的反馈。其中的“自选”表示你自己感兴趣的其他题目，也必须完成。自选的题目不限制 OJ 平台。
+		\item 从下面的题目中选择 2 道（包括自选）撰写题解。题解应当包含题意解析、你的分析思路、你遇到的问题、你的标准解法。
+	\end{enumerate}
+
+	\begin{table}[H]
+		\centering
+		\begin{tabular}{|c|c|c|}
+			\hline
+			题号 & 题目名称 & 备注
+			\\\hline
+			\href{https://www.luogu.com.cn/problem/P1428}{洛谷 P1428} & 小鱼比可爱 &
+			\\\hline
+			\href{https://www.luogu.com.cn/problem/P5728}{洛谷 P5728} & 旗鼓相当的对手 &
+			\\\hline
+			\href{https://www.luogu.com.cn/problem/P2615}{洛谷 P2615} & 神奇的幻方 &
+			\\\hline
+			\href{https://www.luogu.com.cn/problem/P5730}{洛谷 P5730} & 显示屏 &
+			\\\hline
+			\href{https://www.luogu.com.cn/problem/P1614}{洛谷 P1614} & 爱与愁的心痛 & 分析时间复杂度
+			\\\hline
+			\href{https://www.luogu.com.cn/problem/P1789}{洛谷 P1789} & 插火把 &
+			\\\hline
+			\href{https://www.luogu.com.cn/problem/P1765}{洛谷 P1765} & 手机 & 可以使用字符串字面量初始化作为常量的字符数组
+			\\\hline
+			\href{https://www.luogu.com.cn/problem/P5738}{洛谷 P5738} & 歌唱比赛 &
+			\\\hline
+			\href{https://www.luogu.com.cn/problem/P5740}{洛谷 P5740} & 最厉害的学生 &
+			\\\hline
+			\href{https://www.luogu.com.cn/problem/P1304}{洛谷 P1304} & 哥德巴赫猜想 & 提前计算出某个数是否为质数
+			\\\hline
+			自选 & &
+			\\\hline
+			自选 & &
+			\\\hline
+			自选 & &
+			\\\hline
+		\end{tabular}
+	\end{table}
+
 \end{problemset}
