@@ -74,13 +74,13 @@ d = d + 1;
 
 		即相同为 0，不同为 1。按位异或的含义是，将两个二进制整数的每一位依次进行异或运算，在数学上用“$\oplus$”符号表示。例如：
 		$$
-		\begin{aligned}
+		\begin{matrix}
 			& 0001~0001
 			\\
-			\oplus~ & \underline{0000~1011}
-			\\
+			{\oplus} & 0000~1011
+			\\\hline
 			& 0001~1010
-		\end{aligned}
+		\end{matrix}
 		$$
 
 		C 语言中，按位异或用 \lstinline{^} 运算符表示。阅读下面的代码。
