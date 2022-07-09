@@ -1,0 +1,34 @@
+name: build_latex
+
+on:
+  push:
+    branches: [ "main", "action" ]
+  pull_request:
+    branches: [ "main" ]
+
+  # Allows you to run this workflow manually from the Actions tab
+  workflow_dispatch:
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    
+    steps:
+      # Checks-out your repository under $GITHUB_WORKSPACE, so your job can access it
+      - uses: actions/checkout@v3
+
+      - name: LaTeX compilation
+        uses: dante-ev/latex-action@2021-A
+        with:
+          # The root LaTeX file to be compiled
+          root_file: book.tex
+          # The working directory for the latex compiler to be invoked
+          working_directory: book/
+          # Extra arguments to be passed to the latex compiler
+          args: -xelatex -latexoption=-file-line-error -latexoption=-interaction=nonstopmode
+
+      - name: Upload PDF
+        uses: actions/upload-artifact@v3.1.0
+        with:
+          name: book.pdf
+          path: book.pdf
